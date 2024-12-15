@@ -1,0 +1,41 @@
+#*********Original Code***********
+#name: Dev Branch Pipeline
+#on:
+#  push:
+#    branches:
+#      - '*'
+#      - '!main'
+#run-name: ${{ github.sha }} | ${{ github.event.head_commit.message }}
+#
+#jobs:
+##  build:
+##    runs-on: self-hosted
+##    steps:
+##      - uses: actions/checkout@v4
+##      - run: |
+##          echo
+##
+#
+#  tests:
+#    runs-on: self-hosted
+#    steps:
+#      - uses: actions/checkout@v4
+#      - run: |
+#          echo npm test
+
+# Im commenting out the build becoz once the code is developed the tests [Unit tests] gonna run in dev branch, No build is required
+
+
+#********Latest code
+name: Dev Branch Pipeline
+on:
+  workflow_call:
+run-name: ${{ github.sha }} | ${{ github.event.head_commit.message }}
+
+jobs:
+  tests:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo npm test
