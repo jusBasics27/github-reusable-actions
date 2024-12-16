@@ -4,6 +4,9 @@ on:
 #    branches:
 #      - main
   workflow_call:
+    componentName:
+      required: true
+      type: string
 run-name: ${{ github.sha }} | ${{ github.event.head_commit.message }}
 jobs:
 
@@ -22,8 +25,8 @@ jobs:
       - uses: actions/checkout@v4
       - run: |
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 137068255381.dkr.ecr.us-east-1.amazonaws.com
-          docker build -t 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-cart:${{ github.sha }} .
-          docker push 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-cart:${{ github.sha }}
+          docker build -t 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-${{ inputs.componentName }}:${{ github.sha }} .
+          docker push 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-${{ inputs.componentName }}:${{ github.sha }}
 
 #After unit test is passed, build is performed. and then deployed in Dev env, followed by QA
   dev:
@@ -55,7 +58,7 @@ jobs:
 
   UAT:
     runs-on: self-hosted
-    needs: E2E-Tests
+    needs: qa
     environment: UAT
     steps:
       - uses: actions/checkout@v4
