@@ -4,9 +4,10 @@ on:
 #    branches:
 #      - main
   workflow_call:
-    componentName:
-      required: true
-      type: string
+    inputs:
+      componentName:
+        required: true
+        type: string
 run-name: ${{ github.sha }} | ${{ github.event.head_commit.message }}
 jobs:
 
