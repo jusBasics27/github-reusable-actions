@@ -68,7 +68,7 @@ jobs:
   UAT:
     runs-on: self-hosted
     needs: qa
-    environment: UAT
+    environment: E2E-TESTS
     steps:
       - uses: actions/checkout@v4
       - run: |
