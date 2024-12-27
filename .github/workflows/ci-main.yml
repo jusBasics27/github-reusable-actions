@@ -30,6 +30,7 @@ jobs:
           docker push 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-${{ inputs.componentName }}:${{ github.sha }}
 
 #After unit test is passed, build is performed. and then deployed in Dev env, followed by QA
+  #LB means Load balancer
   #          LB=$(kubectl get svc argocd-server -n argocd --output json | jq '.status.loadBalancer.ingress[0].hostname' | sed -e 's/"//g')
   #               LB is now created thru infra, so replaced with DNS name of the load balancer
   #          argocd login $LB --username admin --password $PASS --insecure [old]
