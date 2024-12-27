@@ -30,6 +30,9 @@ jobs:
           docker push 137068255381.dkr.ecr.us-east-1.amazonaws.com/roboshop-${{ inputs.componentName }}:${{ github.sha }}
 
 #After unit test is passed, build is performed. and then deployed in Dev env, followed by QA
+  #          LB=$(kubectl get svc argocd-server -n argocd --output json | jq '.status.loadBalancer.ingress[0].hostname' | sed -e 's/"//g')
+  #               LB is now created thru infra, so replaced with DNS name of the load balancer
+  #          argocd login $LB --username admin --password $PASS --insecure [old]
   dev:
     runs-on: self-hosted
     needs: build
@@ -39,10 +42,7 @@ jobs:
         name: Checkout Code
       - run: |
           aws eks update-kubeconfig --name dev-eks
-#          LB=$(kubectl get svc argocd-server -n argocd --output json | jq '.status.loadBalancer.ingress[0].hostname' | sed -e 's/"//g')
-#               LB is now created thru infra, so replaced with DNS name of the load balancer
           PASS=$(kubectl get secrets argocd-initial-admin-secret -n argocd --template={{.data.password}} | base64 --decode)
-#          argocd login $LB --username admin --password $PASS --insecure [old]
           argocd login argocd-dev.waferhassan.online --username admin --password $PASS --insecure --skip-test-tls --grpc-web
         name: ArgoCD Login
       - run: |
