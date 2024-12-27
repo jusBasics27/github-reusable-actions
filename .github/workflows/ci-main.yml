@@ -44,7 +44,6 @@ jobs:
           PASS=$(kubectl get secrets argocd-initial-admin-secret -n argocd --template={{.data.password}} | base64 --decode)
 #          argocd login $LB --username admin --password $PASS --insecure [old]
           argocd login argocd-dev.waferhassan.online --username admin --password $PASS --insecure --skip-test-tls --grpc-web
-
         name: ArgoCD Login
       - run: |
           argocd app create ${{ inputs.componentName }} --repo https://github.com/jusBasics27/roboshop-helm.git  --path . --dest-namespace default --dest-server https://kubernetes.default.svc  --values env-dev/${{ inputs.componentName }}.yaml  --helm-set COMMIT_ID=${{ github.sha }} --upsert
